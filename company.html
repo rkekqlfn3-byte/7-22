@@ -241,34 +241,37 @@
       badge.className = 'diagnosis-badge bg-success text-white shadow-sm';
       badge.innerHTML = '<i class="bi bi-check-circle-fill"></i> 참여 지원 대상 (4/4 완료)';
       alertBox.className = 'alert alert-success border-0 mt-3 mb-0 rounded-3 p-3.5 shadow-sm';
-      alertText.className = 'd-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3';
+      alertText.className = 'd-flex flex-column gap-3 w-100';
       alertText.innerHTML = `
-        <div class="d-flex align-items-center gap-3">
-          <div class="step-icon-wrapper flex-shrink-0" style="width: 44px; height: 44px; background: #DCFCE7; color: #16A34A; font-size: 1.4rem;">
+        <div class="d-flex align-items-start gap-3 w-100">
+          <div class="step-icon-wrapper flex-shrink-0" style="width: 48px; height: 48px; background: #DCFCE7; color: #16A34A; font-size: 1.5rem;">
             <i class="bi bi-check-circle-fill"></i>
           </div>
-          <div>
-            <h6 class="fw-bold text-dark mb-2.5" style="font-size: 1.05rem;"><i class="bi bi-party-fill text-warning me-1"></i> 축하합니다! 지원 가능 자격을 모두 만족합니다.</h6>
-            <div class="d-flex flex-column gap-1.5 mb-2.5" style="font-size: 0.85rem;">
-              <div class="d-flex align-items-center gap-2">
-                <span class="badge bg-white text-primary border px-2.5 py-1.5 fw-bold shadow-sm flex-shrink-0" style="width: 75px;"><i class="bi bi-1-circle-fill me-1"></i> 1단계</span>
+          <div class="flex-grow-1 w-100">
+            <h5 class="fw-bold text-dark mb-1" style="font-size: 1.1rem;"><i class="bi bi-party-fill text-warning me-1"></i> 축하합니다! 지원 가능 자격을 모두 만족합니다.</h5>
+            <p class="small text-secondary mb-3">아래 절차에 따라 참여신청서를 다운로드받아 작성 후 접수해 주세요.</p>
+            
+            <div class="d-flex flex-column gap-2 p-3 bg-white rounded-3 border mb-3 shadow-sm w-100">
+              <div class="d-flex align-items-center gap-2.5">
+                <span class="badge bg-primary text-white px-2.5 py-1.5 fw-bold rounded-pill flex-shrink-0">1단계</span>
                 <span class="fw-bold text-dark">HRD4U 회원가입</span>
               </div>
-              <div class="d-flex align-items-center gap-2">
-                <span class="badge bg-white text-primary border px-2.5 py-1.5 fw-bold shadow-sm flex-shrink-0" style="width: 75px;"><i class="bi bi-2-circle-fill me-1"></i> 2단계</span>
+              <div class="d-flex align-items-center gap-2.5">
+                <span class="badge bg-primary text-white px-2.5 py-1.5 fw-bold rounded-pill flex-shrink-0">2단계</span>
                 <span class="fw-bold text-dark">기초진단 및 이음 컨설팅 진행</span>
               </div>
-              <div class="d-flex align-items-center gap-2">
-                <span class="badge bg-white text-primary border px-2.5 py-1.5 fw-bold shadow-sm flex-shrink-0" style="width: 75px;"><i class="bi bi-3-circle-fill me-1"></i> 3단계</span>
-                <span class="fw-bold text-dark">참여신청서 작성 후 이메일(thgml8812@gef.or.kr) 접수</span>
+              <div class="d-flex align-items-center gap-2.5">
+                <span class="badge bg-primary text-white px-2.5 py-1.5 fw-bold rounded-pill flex-shrink-0">3단계</span>
+                <span class="fw-bold text-dark">참여신청서 작성 후 이메일(<span class="text-primary fw-bold">thgml8812@gef.or.kr</span>) 접수</span>
               </div>
             </div>
-            <p class="small text-secondary mb-0"><i class="bi bi-info-circle-fill text-primary me-1"></i> 아래 버튼으로 서류를 다운로드받아 작성 후 이메일로 접수해 주세요.</p>
+
+            <a href="2.참여기업/참여기업 서류.zip" download class="btn btn-success btn-lg rounded-pill px-4 py-2.5 fw-bold w-100 d-flex align-items-center justify-content-center gap-2 shadow-sm">
+              <i class="bi bi-file-earmark-arrow-down-fill fs-5"></i>
+              <span>참여신청서 서류 즉시 다운로드 (.zip)</span>
+            </a>
           </div>
         </div>
-        <a href="2.참여기업/참여기업 서류.zip" download class="btn btn-success rounded-pill px-4 py-2.5 fw-bold text-nowrap shadow-sm align-self-start align-self-md-center">
-          <i class="bi bi-file-earmark-arrow-down-fill me-1"></i> 신청서 즉시 다운로드
-        </a>
       `;
     } else {
       badge.className = 'diagnosis-badge bg-warning-subtle text-warning-emphasis';
