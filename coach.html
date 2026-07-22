@@ -521,7 +521,7 @@
     1: {
       zipFile: '3.AI훈련코치/AI훈련로드맵 서식/AI훈련로드맵 서식.zip',
       files: [
-        { badge: '필수', label: '도메인 전문가 증빙자료(학력/경력 증명서, 자격증, HRD4U 전문가 증빙 등)', path: '#' },
+        { badge: '필수', label: '도메인 전문가 증빙자료(학력/경력증명서, 자격증, HRD4U증빙 등)', path: '#' },
         { badge: '필수', label: '내부 전문가 증빙자료(재직 증명서 등)', path: '#' },
         { badge: '필수', label: '기업HRD이음컨설팅 보고서', path: '#' },
         { badge: '신청', label: '(신청) 1-1. AI훈련로드맵 컨설팅 참여 기업 신청서', path: '3.AI훈련코치/AI훈련로드맵 서식/(신청) 1-1. AI훈련로드맵 컨설팅 참여 기업 신청서.hwp' },
@@ -945,7 +945,7 @@
       pkg.files.forEach(f => {
         // '도메인 전문가 증빙자료' 라벨 자동 정정
         if (f.label && f.label.includes('도메인 전문가 증빙자료')) {
-          f.label = '도메인 전문가 증빙자료(학력/경력 증명서, 자격증, HRD4U 전문가 증빙 등)';
+          f.label = '도메인 전문가 증빙자료(학력/경력증명서, 자격증, HRD4U증빙 등)';
         }
 
         let matched = false;
@@ -980,10 +980,10 @@
           html += items.map(f => {
             let displayLabel = f.label;
             if (displayLabel.includes('도메인 전문가 증빙자료')) {
-              displayLabel = '도메인 전문가 증빙자료(학력/경력 증명서, 자격증, HRD4U 전문가 증빙 등)';
+              displayLabel = '도메인 전문가 증빙자료(학력/경력증명서, 자격증, HRD4U증빙 등)';
             }
             return `<div class="p-2.5 bg-light rounded-3 border d-flex align-items-center justify-content-between gap-2 mb-1" style="font-size: 0.85rem;">
-                      <span class="fw-bold text-dark"><i class="bi bi-file-earmark-text text-secondary me-2"></i>${displayLabel}</span>
+                      <span class="fw-bold text-dark text-truncate" style="font-size: 0.85rem;"><i class="bi bi-file-earmark-text text-secondary me-2"></i>${displayLabel}</span>
                       <span class="badge bg-white text-secondary border px-2 py-1 flex-shrink-0" style="font-size: 0.75rem;">제출 요망</span>
                     </div>`;
           }).join('');
