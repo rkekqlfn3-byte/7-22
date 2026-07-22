@@ -982,9 +982,9 @@
             if (displayLabel.includes('도메인 전문가 증빙자료')) {
               displayLabel = '도메인 전문가 증빙자료(학력/경력 증명서, 자격증, HRD4U 전문가 증빙 등)';
             }
-            return `<div class="p-2.5 bg-light rounded-3 border-0 d-flex align-items-center justify-content-between" style="font-size: 0.84rem;">
-                      <span class="fw-bold text-dark"><i class="bi bi-file-earmark-text text-secondary me-2"></i>${displayLabel}</span>
-                      <span class="badge bg-white text-secondary border px-2 py-1 small">제출 요망</span>
+            return `<div class="p-2 bg-light rounded-3 border-0 d-flex align-items-center gap-2" style="font-size: 0.78rem; letter-spacing: -0.03em;">
+                      <span class="badge bg-white text-secondary border px-2 py-1 flex-shrink-0" style="font-size: 0.72rem;">제출 요망</span>
+                      <span class="fw-bold text-dark text-nowrap" style="font-size: 0.79rem;"><i class="bi bi-file-earmark-text text-secondary me-1.5"></i>${displayLabel}</span>
                     </div>`;
           }).join('');
 
