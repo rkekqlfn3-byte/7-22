@@ -516,7 +516,50 @@
   //
   //  badge(뱃지) 종류:  신청 | 진행 | 수당 | 신규 | 설계 | 완료  (자유롭게 추가 가능)
   //
-  let FORM_PACKAGES = [];
+  // 기본 로컬 서식 패키지 데이터 (구글 시트 로딩 전 0초 즉시 렌더링용)
+  let DEFAULT_FORM_PACKAGES = {
+    1: {
+      zipFile: '3.AI훈련코치/AI훈련로드맵 서식/AI훈련로드맵 서식.zip',
+      files: [
+        { badge: '필수', label: '도메인 전문가 증빙자료(학력/경력 증명서, 자격증, HRD4U 전문가 증빙 등)', path: '#' },
+        { badge: '필수', label: '내부 전문가 증빙자료(재직 증명서 등)', path: '#' },
+        { badge: '필수', label: '기업HRD이음컨설팅 보고서', path: '#' },
+        { badge: '신청', label: '(신청) 1-1. AI훈련로드맵 컨설팅 참여 기업 신청서', path: '3.AI훈련코치/AI훈련로드맵 서식/(신청) 1-1. AI훈련로드맵 컨설팅 참여 기업 신청서.hwp' },
+        { badge: '신청', label: '(신청) 1-2. AI훈련로드맵 컨설팅 신청서(코치매칭 후 작성)', path: '3.AI훈련코치/AI훈련로드맵 서식/(신청) 1-2. AI훈련로드맵 컨설팅 신청서(코치매칭 후 작성).hwp' },
+        { badge: '신청', label: '(신청) 2-1. AI훈련코치 컨설팅 승인 요청서(코치 작성)', path: '3.AI훈련코치/AI훈련로드맵 서식/(신청) 2-1. AI훈련코치 컨설팅 승인 요청서(코치 작성).hwp' },
+        { badge: '신청', label: '(신청) 2-2. AI훈련코치 컨설팅 팀 참여 약정서(코치 작성)', path: '3.AI훈련코치/AI훈련로드맵 서식/(신청) 2-2. AI훈련코치 컨설팅 팀 참여 약정서(코치 작성).hwp' },
+        { badge: '진행', label: '(진행) 1-1. AI훈련로드맵 기초진단표', path: '3.AI훈련코치/AI훈련로드맵 서식/(진행) 1-1. AI훈련로드맵 기초진단표.hwp' },
+        { badge: '진행', label: '(진행) 1-2. AI훈련로드맵 컨설팅일지', path: '3.AI훈련코치/AI훈련로드맵 서식/(진행) 1-2. AI훈련로드맵 컨설팅일지.hwp' },
+        { badge: '진행', label: '(진행) 1-3. AI훈련로드맵 컨설팅 출석부', path: '3.AI훈련코치/AI훈련로드맵 서식/(진행) 1-3. AI훈련로드맵 컨설팅 출석부.hwp' },
+        { badge: '진행', label: '(진행) 2-1. 컨설팅 참여 이행 및 정보 제공 활용 동의서', path: '3.AI훈련코치/AI훈련로드맵 서식/(진행) 2-1. 컨설팅 참여 이행 및 정보 제공 활용 동의서.hwp' },
+        { badge: '진행', label: '(진행) 2-2. 컨설팅 성과 창출 청렴 서약서', path: '3.AI훈련코치/AI훈련로드맵 서식/(진행) 2-2. 컨설팅 성과 창출 청렴 서약서.hwp' },
+        { badge: '진행', label: '(진행) 2-3. AI훈련로드맵 기업 확인서', path: '3.AI훈련코치/AI훈련로드맵 서식/(진행) 2-3. AI훈련로드맵 기업 확인서.hwp' },
+        { badge: '진행', label: '(진행) 2-4. AI훈련로드맵 컨설팅 보고서', path: '3.AI훈련코치/AI훈련로드맵 서식/(진행) 2-4. AI훈련로드맵 컨설팅 보고서.hwp' }
+      ]
+    },
+    2: {
+      zipFile: '3.AI훈련코치/PBL 과정 개발 서식/PBL 과정 개발 서식.zip',
+      files: [
+        { badge: '신청', label: '(신청) 1-1. 문제해결형(PBL) AI+직무 훈련 과정개발 컨설팅 신청서', path: '3.AI훈련코치/PBL 과정 개발 서식/(신청) 1-1. 문제해결형(PBL) AI+직무 훈련 과정개발 컨설팅 신청서.hwp' },
+        { badge: '신청', label: '(신청) 1-2. 문제해결형(PBL) AI+직무 훈련 참여 신청서', path: '3.AI훈련코치/PBL 과정 개발 서식/(신청) 1-2. 문제해결형(PBL) AI+직무 훈련 참여 신청서.hwp' },
+        { badge: '진행', label: '(진행) 1-1. 문제해결형(PBL) AI+직무 훈련 과정개발 컨설팅 일지', path: '3.AI훈련코치/PBL 과정 개발 서식/(진행) 1-1. 문제해결형(PBL) AI+직무 훈련 과정개발 컨설팅 일지.hwp' },
+        { badge: '진행', label: '(진행) 1-2. 문제해결형(PBL) AI+직무 훈련 실시 현황표', path: '3.AI훈련코치/PBL 과정 개발 서식/(진행) 1-2. 문제해결형(PBL) AI+직무 훈련 실시 현황표.hwp' },
+        { badge: '진행', label: '(진행) 2-1. 문제해결형(PBL) AI+직무 훈련 훈련과정 개발보고서', path: '3.AI훈련코치/PBL 과정 개발 서식/(진행) 2-1. 문제해결형(PBL) AI+직무 훈련 훈련과정 개발보고서.hwp' },
+        { badge: '진행', label: '(진행) 2-2. 문제해결형(PBL) AI+직무 훈련 훈련교재(안)', path: '3.AI훈련코치/PBL 과정 개발 서식/(진행) 2-2. 문제해결형(PBL) AI+직무 훈련 훈련교재(안).hwp' },
+        { badge: '진행', label: '(진행) 2-3. 문제해결형(PBL) AI+직무 훈련 훈련과정 개발 검토서', path: '3.AI훈련코치/PBL 과정 개발 서식/(진행) 2-3. 문제해결형(PBL) AI+직무 훈련 훈련과정 개발 검토서.hwp' },
+        { badge: '진행', label: '(진행) 2-4. 문제해결형(PBL) AI+직무 훈련 시간표', path: '3.AI훈련코치/PBL 과정 개발 서식/(진행) 2-4. 문제해결형(PBL) AI+직무 훈련 시간표.hwp' }
+      ]
+    },
+    3: {
+      zipFile: '3.AI훈련코치/PBL 훈련 서식/PBL 서식.zip',
+      files: [
+        { badge: '진행', label: '(진행) 1-1. PBL 훈련 실시 일지', path: '3.AI훈련코치/PBL 훈련 서식/(진행) 1-1. PBL 훈련 실시 일지.hwp' },
+        { badge: '진행', label: '(진행) 1-2. PBL 훈련 출석부 및 수료보고서', path: '3.AI훈련코치/PBL 훈련 서식/(진행) 1-2. PBL 훈련 출석부 및 수료보고서.hwp' }
+      ]
+    }
+  };
+
+  let FORM_PACKAGES = DEFAULT_FORM_PACKAGES;
   let NOTICES = [];
   let FAQ_LIST = [];
   let QNA_LIST = [];
@@ -1191,6 +1234,7 @@ async function loadAccessLogsToTable() {
 
   // 페이지 로드 시 기존 로그인 상태 확인
   window.addEventListener('DOMContentLoaded', () => {
+    renderFormPackages();   // ★ 로컬 서식 패키지 0초 즉시 렌더링
     loadNoticesFromSheet(); // ★ 공지사항 자동 불러오기
     loadFaqFromSheet();     // ★ FAQ 자동 불러오기
     loadQnaFromSheet();     // ★ QnA 자동 불러오기
