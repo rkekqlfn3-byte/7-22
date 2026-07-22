@@ -889,6 +889,7 @@
 
       // 단계별 그룹화
       const groups = {
+        '필수': [],
         '별첨': [],
         '신청': [],
         '진행': [],
@@ -899,6 +900,11 @@
       const others = [];
 
       pkg.files.forEach(f => {
+        // '도메인 전문가 증빙자료' 라벨 자동 정정
+        if (f.label && f.label.includes('도메인 전문가 증빙자료')) {
+          f.label = '도메인 전문가 증빙자료(학력/경력 증명서, 자격증, HRD4U 전문가 증빙 등)';
+        }
+
         let matched = false;
         for (const key of Object.keys(groups)) {
           if (f.badge.includes(key)) {
@@ -915,17 +921,37 @@
       // 렌더링 함수
       const renderGroup = (title, items) => {
         if (items.length === 0) return '';
-        let html = `<div class="mb-3">
-                      <div class="fw-bold text-muted small mb-2"><i class="bi bi-bookmark-check-fill me-1"></i>[${title}] 관련 서식</div>`;
+
+        let headerHTML = `<div class="fw-bold text-muted small mb-2"><i class="bi bi-bookmark-check-fill me-1"></i>[${title}] 관련 서식</div>`;
+        if (title === '필수') {
+          headerHTML = `<div class="fw-bold text-dark small mb-2"><i class="bi bi-exclamation-circle-fill text-danger me-1"></i>[필수] 제출 서류</div>`;
+        } else if (title === '별첨') {
+          headerHTML = `<div class="fw-bold text-muted small mb-2"><i class="bi bi-paperclip text-primary me-1"></i>[별첨] 관련 서식</div>`;
+        }
+
+        let html = `<div class="mb-3">${headerHTML}`;
         html += items.map(f => {
-          if (f.badge.includes('별첨')) {
-            return `<div class="btn btn-light border text-start fw-bold shadow-sm d-flex justify-content-between align-items-center mb-2" style="cursor: default; font-size: 0.85rem;">
-                      <span><i class="bi bi-paperclip text-secondary me-2"></i>${f.label}</span>
-                    </div>`;
+          let displayLabel = f.label;
+          if (displayLabel.includes('도메인 전문가 증빙자료')) {
+            displayLabel = '도메인 전문가 증빙자료(학력/경력 증명서, 자격증, HRD4U 전문가 증빙 등)';
+          }
+
+          if (f.badge.includes('별첨') || f.badge.includes('필수')) {
+            const paperclipColor = f.badge.includes('필수') ? 'text-danger' : 'text-secondary';
+            if (f.path && f.path !== '#') {
+              return `<a href="${f.path}" download class="btn btn-light border text-start fw-bold shadow-sm d-flex justify-content-between align-items-center mb-2" style="font-size: 0.85rem;">
+                        <span><i class="bi bi-paperclip ${paperclipColor} me-2"></i>${displayLabel}</span>
+                        <i class="bi bi-download text-muted"></i>
+                      </a>`;
+            } else {
+              return `<div class="btn btn-light border text-start fw-bold shadow-sm d-flex justify-content-between align-items-center mb-2" style="cursor: default; font-size: 0.85rem;">
+                        <span><i class="bi bi-paperclip ${paperclipColor} me-2"></i>${displayLabel}</span>
+                      </div>`;
+            }
           } else {
             const badgeClass = BADGE_STYLES[f.badge] || 'bg-apply';
             return `<a href="${f.path}" download class="btn btn-light border text-start fw-bold shadow-sm d-flex justify-content-between align-items-center mb-2" style="font-size: 0.85rem;">
-                      <span><span class="badge-step ${badgeClass} me-2">${f.badge}</span>${f.label}</span>
+                      <span><span class="badge-step ${badgeClass} me-2">${f.badge}</span>${displayLabel}</span>
                       <i class="bi bi-download text-muted"></i>
                     </a>`;
           }
@@ -935,6 +961,7 @@
       };
 
       // 순서대로 렌더링
+      filesHTML += renderGroup('필수', groups['필수']);
       filesHTML += renderGroup('별첨', groups['별첨']);
       filesHTML += renderGroup('신청', groups['신청']);
       filesHTML += renderGroup('진행', groups['진행']);
