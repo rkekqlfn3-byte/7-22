@@ -965,39 +965,43 @@
       const renderGroup = (title, items) => {
         if (items.length === 0) return '';
 
-        let headerHTML = `<div class="fw-bold text-muted small mb-2"><i class="bi bi-bookmark-check-fill me-1"></i>[${title}] 관련 서식</div>`;
-        if (title === '필수') {
-          headerHTML = `<div class="fw-bold text-dark small mb-2"><i class="bi bi-exclamation-circle-fill text-danger me-1"></i>[필수] 제출 서류</div>`;
-        } else if (title === '별첨') {
-          headerHTML = `<div class="fw-bold text-muted small mb-2"><i class="bi bi-paperclip text-primary me-1"></i>[별첨] 관련 서식</div>`;
+        // [필수] 또는 [별첨] 은 서식 다운로드 버튼 리스트가 아닌 완전히 독립된 '제출 증빙 서류 안내 상자'로 렌더링
+        if (title === '필수' || title === '별첨') {
+          let boxTitle = title === '필수' ? '[필수] 제출 증빙 서류' : '[별첨] 제출 증빙 서류 목록';
+          let borderClass = title === '필수' ? 'border-danger' : 'border-primary';
+          let iconClass = title === '필수' ? 'bi-exclamation-circle-fill text-danger' : 'bi-paperclip text-primary';
+
+          let html = `<div class="card p-3 mb-3 bg-white border-start border-4 ${borderClass} shadow-sm" style="border-radius: 12px;">
+                        <div class="fw-bold text-dark small mb-2 d-flex align-items-center">
+                          <i class="bi ${iconClass} fs-6 me-1.5"></i>📌 ${boxTitle}
+                        </div>
+                        <div class="d-flex flex-column gap-2">`;
+          
+          html += items.map(f => {
+            let displayLabel = f.label;
+            if (displayLabel.includes('도메인 전문가 증빙자료')) {
+              displayLabel = '도메인 전문가 증빙자료(학력/경력 증명서, 자격증, HRD4U 전문가 증빙 등)';
+            }
+            return `<div class="p-2.5 bg-light rounded-3 border-0 d-flex align-items-center justify-content-between" style="font-size: 0.84rem;">
+                      <span class="fw-bold text-dark"><i class="bi bi-file-earmark-text text-secondary me-2"></i>${displayLabel}</span>
+                      <span class="badge bg-white text-secondary border px-2 py-1 small">제출 요망</span>
+                    </div>`;
+          }).join('');
+
+          html += `</div></div>`;
+          return html;
         }
 
-        let html = `<div class="mb-3">${headerHTML}`;
+        // 실제 다운로드용 서식 그룹 (신청, 진행, 수당 등)
+        let html = `<div class="mb-3">
+                      <div class="fw-bold text-muted small mb-2"><i class="bi bi-bookmark-check-fill me-1"></i>[${title}] 관련 서식</div>`;
         html += items.map(f => {
           let displayLabel = f.label;
-          if (displayLabel.includes('도메인 전문가 증빙자료')) {
-            displayLabel = '도메인 전문가 증빙자료(학력/경력 증명서, 자격증, HRD4U 전문가 증빙 등)';
-          }
-
-          if (f.badge.includes('별첨') || f.badge.includes('필수')) {
-            const paperclipColor = f.badge.includes('필수') ? 'text-danger' : 'text-secondary';
-            if (f.path && f.path !== '#') {
-              return `<a href="${f.path}" download class="btn btn-light border text-start fw-bold shadow-sm d-flex justify-content-between align-items-center mb-2" style="font-size: 0.85rem;">
-                        <span><i class="bi bi-paperclip ${paperclipColor} me-2"></i>${displayLabel}</span>
-                        <i class="bi bi-download text-muted"></i>
-                      </a>`;
-            } else {
-              return `<div class="btn btn-light border text-start fw-bold shadow-sm d-flex justify-content-between align-items-center mb-2" style="cursor: default; font-size: 0.85rem;">
-                        <span><i class="bi bi-paperclip ${paperclipColor} me-2"></i>${displayLabel}</span>
-                      </div>`;
-            }
-          } else {
-            const badgeClass = BADGE_STYLES[f.badge] || 'bg-apply';
-            return `<a href="${f.path}" download class="btn btn-light border text-start fw-bold shadow-sm d-flex justify-content-between align-items-center mb-2" style="font-size: 0.85rem;">
-                      <span><span class="badge-step ${badgeClass} me-2">${f.badge}</span>${displayLabel}</span>
-                      <i class="bi bi-download text-muted"></i>
-                    </a>`;
-          }
+          const badgeClass = BADGE_STYLES[f.badge] || 'bg-apply';
+          return `<a href="${f.path}" download class="btn btn-light border text-start fw-bold shadow-sm d-flex justify-content-between align-items-center mb-2" style="font-size: 0.85rem;">
+                    <span><span class="badge-step ${badgeClass} me-2">${f.badge}</span>${displayLabel}</span>
+                    <i class="bi bi-download text-muted"></i>
+                  </a>`;
         }).join('');
         html += `</div>`;
         return html;
