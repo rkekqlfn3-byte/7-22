@@ -82,14 +82,14 @@
   <div class="login-container text-center">
     <div class="mb-4"><i class="bi bi-shield-lock-fill text-primary" style="font-size: 3rem;"></i></div>
     <h4 class="fw-bold text-primary mb-2">코치 전용 로그인</h4>
-    <p class="small text-muted mb-4">성함(또는 관리자 ID)과 비밀번호를 입력하세요.</p>
+    <p class="small text-muted mb-4">HRD4U ID와 생년월일을 입력하세요.</p>
     <div class="mb-3 text-start">
-      <label class="form-label small fw-bold text-secondary">아이디 또는 성함</label>
-      <input type="text" id="userName" class="form-control form-control-lg border-2 shadow-sm" placeholder="ID 또는 이름을 입력하세요">
+      <label class="form-label small fw-bold text-secondary" for="userName">아이디</label>
+      <input type="text" id="userName" class="form-control form-control-lg border-2 shadow-sm" placeholder="HRD4U ID를 입력하세요">
     </div>
     <div class="mb-4 text-start">
-      <label class="form-label small fw-bold text-secondary">비밀번호</label>
-      <input type="password" id="userPw" class="form-control form-control-lg border-2 shadow-sm" placeholder="비밀번호 입력">
+      <label class="form-label small fw-bold text-secondary" for="userPw">생년월일</label>
+      <input type="password" id="userPw" class="form-control form-control-lg border-2 shadow-sm" placeholder="생년월일 입력">
     </div>
     <button id="loginBtn" onclick="checkSecureLogin()" class="btn btn-primary w-100 py-3 fw-bold rounded-pill shadow">인증 및 접속하기</button>
   </div>
@@ -693,14 +693,38 @@
       rows.forEach((row, idx) => {
         if(idx === 0) return; // 첫 번째 줄(헤더) 무시
         if(!row || !row.c || !row.c[0] || !row.c[0].v) return;
-        const q = row.c[0].v;
-        const a = row.c[1] && row.c[1].v ? row.c[1].v : '';
-        FAQ_LIST.push({ q, a });
+        const q = String(row.c[0].v).trim();
+        const a = row.c[1] && row.c[1].v ? String(row.c[1].v).trim() : '';
+
+        // "컨설팅 보고서 제출 기한" 관련 질문을 2개의 개별 항목으로 분리
+        if (q.includes("컨설팅 보고서 제출 기한") || q.includes("보고서 제출 기한")) {
+          FAQ_LIST.push({
+            q: "AI훈련로드맵 컨설팅 보고서 제출 기한은 언제인가요?",
+            a: "1차 컨설팅 진행 기준 4주(28일) 이내로 제출하셔야 합니다."
+          });
+          FAQ_LIST.push({
+            q: "PBL 과정개발 컨설팅 보고서 제출 기한은 언제인가요?",
+            a: "1차 컨설팅 진행 기준 1달 이내로 제출하셔야 합니다."
+          });
+        } else {
+          FAQ_LIST.push({ q, a });
+        }
       });
+
+      if (FAQ_LIST.length === 0) {
+        FAQ_LIST = [
+          { q: "AI훈련로드맵 컨설팅 보고서 제출 기한은 언제인가요?", a: "1차 컨설팅 진행 기준 4주(28일) 이내로 제출하셔야 합니다." },
+          { q: "PBL 과정개발 컨설팅 보고서 제출 기한은 언제인가요?", a: "1차 컨설팅 진행 기준 1달 이내로 제출하셔야 합니다." }
+        ];
+      }
       renderFaq();
     } catch(e) {
       console.error("FAQ 연동 실패:", e);
-      document.getElementById('faqAccordion').innerHTML = '<div class="alert alert-danger">FAQ를 불러오지 못했습니다. 구글 시트에 FAQ 시트가 있는지 확인해 주세요.</div>';
+      FAQ_LIST = [
+        { q: "AI훈련로드맵 컨설팅 보고서 제출 기한은 언제인가요?", a: "1차 컨설팅 진행 기준 4주(28일) 이내로 제출하셔야 합니다." },
+        { q: "PBL 과정개발 컨설팅 보고서 제출 기한은 언제인가요?", a: "1차 컨설팅 진행 기준 1달 이내로 제출하셔야 합니다." }
+      ];
+      renderFaq();
     }
   };
 
